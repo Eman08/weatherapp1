@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<head>
+    <title> Weather application</title>
+</head>
+
+<style>
+
+
+
+
+    body{
+        height:100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+ 
+  background-size: cover;
+    
+    }
+
+span#name{
+
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-left: 30px;
+font-size: 25px;
+font-weight: lighter;
+letter-spacing: 1px;
+margin-bottom:30px;
+
+}
+
+span#weather{
+    font-size:30px;
+    margin-left:39px;
+    font-weight: bold;
+    margin-bottom:40px;
+
+}
+span#value{
+    margin-left: 30px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style:italic;
+
+    
+    
+}
+
+.part1{
+    margin-top: 50px;
+    text-align: center;
+}
+
+.app{
+    margin-left: 500px;
+    margin-top:100px;
+    text-align: center;
+    width:350px;
+    height:350px;
+    background-color:rgb(230,230,230,0.3);
+    border:1px solid black;
+    border-spacing: 5px;
+    border-radius: 10px;
+   
+}
+
+.display{
+    margin-top:20px;
+    text-align: center;
+}
+</style>
+
+<body>
+    <div class="app">
+    <div class="part1">
+        <form>
+        <h2 style="font-family:monospace;"> Weather app</h2>
+        <input type="text" id="city" placeholder="Search for city" style="border:none; border-bottom:1px solid #990011FF; margin-left:20px; background-color: inherit; margin-top: 20px; font-family: monospace;"> </br> </br>
+        <button type="submit" style="width:160px; height:30px;margin-left:20px; background-color:#990011FF; color:#FCF6F5FF; font-family: monospace;"  > Search</button>
+       
+    </form>
+    </div>
+
+    <div class="display">
+        <br>
+        <span id="name"> </span> </br>
+        <span id="weather">
+        <span id="temp"> </span>
+        </span> </br>
+        <span id="value"></span>
+        <span id=x> </span>
+       
+       
+    </div>
+    </div>
+</body>
+
+<script>
+
+    var inputval='';
+    const form=document.querySelector(".part1 form");
+    form.addEventListener("submit", e=>{
+      e.preventDefault();
+     inputval=city.value;
+     func();
+
+    });
+   
+ async function func(){
+  var api='https://api.openweathermap.org/data/2.5/weather?q=';
+   var city=document.getElementById("city").value;
+  
+   var apikey="&APPID=ea681898d4822413e0945838692f7cf1";
+   var units="&units=metric";
+  
+   var url=api+inputval+apikey+units;
+    
+   const response=await fetch(url);
+   console.log(response.status);
+
+   if(response.status===404){
+    document.getElementById("name").innerHTML="City not found! Try again!";
+    document.getElementById("temp").innerHTML="";
+   document.getElementById("value").innerHTML="";
+   }
+
+   else if(response.status===200){
+   const data=await response.json();
+   document.getElementById("name").innerHTML=data.name;
+   document.getElementById("temp").innerHTML=Math.round(data.main.temp)+" °C";
+   document.getElementById("value").innerHTML=data.weather[0].main;
+   var weathertype=data.weather[0].main;
+  
+
+
+   if(weathertype=='Rain'||weathertype=='Drizzle'){
+    document.body.style.background="url('https://www.freevector.com/uploads/vector/preview/7040/FreeVector-Rain-Background.jpg') no-repeat";
+    document.body.style.backgroundSize="150% 150%";
+   }
+
+   if(weathertype=='Clouds')
+   {
+    document.body.style.background="url('https://images.unsplash.com/photo-1611928482473-7b27d24eab80?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2xvdWR5JTIwd2VhdGhlcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80')no-repeat";
+    document.body.style.backgroundSize="150% 150%";
+   }
+
+   if(weathertype=='Clear'){
+    document.body.style.background="url('https://ak.picdn.net/shutterstock/videos/1035154607/thumb/1.jpg')no-repeat ";
+    document.body.style.backgroundSize="150% 150%";
+   }
+   if(weathertype=='Haze'||weathertype=='Smoke'){
+    document.body.style.background="url('https://media.nbcphiladelphia.com/2021/07/Haze-tease.jpg?quality=85&strip=all&resize=1200%2C675')no-repeat ";
+    document.body.style.backgroundSize="150% 150%";
+   }
+  
+   if(weathertype=='Mist'){
+    document.body.style.background="url('https://english-school.f5.works/uploads/english_school/image/10516/clouds-1850093__340.jpg')no-repeat ";
+    document.body.style.backgroundSize="150% 150%";
+   }
+
+   if(weathertype=='Thunderstorm'){
+    document.body.style.background="url('https://images.unsplash.com/photo-1561485132-59468cd0b553?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mjl8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80')no-repeat ";
+    document.body.style.backgroundSize="100% 130%";
+   }
+
+   if(weathertype=='Snow'){
+    document.body.style.background="url('https://i.pinimg.com/originals/65/92/67/659267cee03f9138028491a58a424e10.jpg')no-repeat ";
+    document.body.style.backgroundSize="150% 150%"; 
+   }
+
+   else{
+    document.body.style.backgroundColor="black";
+    document.body.style.backgroundSize="150% 150%"; 
+   }
+
+}
+  form.reset();
+ 
+ }
+</script>
+
